@@ -4,7 +4,7 @@
 
 extern crate byteorder;
 
-mod error;
+pub mod error;
 pub mod file;
 pub mod point;
 mod result;
