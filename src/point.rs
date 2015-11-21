@@ -55,6 +55,7 @@ pub enum TargetType {
     CenterOfGravity,
     Parabola,
     Gaussian,
+    Peak,
 }
 
 impl TargetType {
@@ -73,12 +74,13 @@ impl TargetType {
             TargetType::CenterOfGravity => 0,
             TargetType::Parabola => 1,
             TargetType::Gaussian => 2,
+            TargetType::Peak => 3,
         }
     }
 }
 
 impl Default for TargetType {
     fn default() -> TargetType {
-        TargetType::CenterOfGravity
+        TargetType::Peak
     }
 }
