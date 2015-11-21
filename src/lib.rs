@@ -10,3 +10,4 @@ pub mod point;
 mod result;
 
 pub use file::File;
+pub use point::Point;
