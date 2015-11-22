@@ -2,7 +2,7 @@
 
 set -o errexit -o nounset
 
-project="sbd"
+project="sdc"
 rev=$(git rev-parse --short HEAD)
 
 cargo doc
