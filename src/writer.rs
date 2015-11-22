@@ -30,21 +30,30 @@ impl Writer<BufWriter<fs::File>> {
     /// remove_file("temp.sdc").unwrap();
     pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Writer<BufWriter<fs::File>>> {
         let writer = BufWriter::new(try!(fs::File::create(path)));
-        let mut writer = Writer {
-            writer: writer,
-        };
-        try!(writer.write_header());
-        Ok(writer)
+        Writer::new(writer)
     }
 }
 
 impl<W: Write> Writer<W> {
-    fn write_header(&mut self) -> Result<()> {
-        try!(self.writer.write_u32::<LittleEndian>(8));
+    /// Creates a new writer, consuming the provided `Write`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use std::fs::remove_file;
+    /// use std::fs::File;
+    /// use sdc::writer::Writer;
+    /// let writer = File::create("temp.sdc").unwrap();
+    /// {
+    ///     let writer = Writer::new(writer).unwrap();
+    /// }
+    /// # remove_file("temp.sdc").unwrap();
+    pub fn new(mut writer: W) -> Result<Writer<W>> {
+        try!(writer.write_u32::<LittleEndian>(8));
         // TODO hardcoded version, make this smahtar.
-        try!(self.writer.write_u16::<LittleEndian>(5));
-        try!(self.writer.write_u16::<LittleEndian>(0));
-        Ok(())
+        try!(writer.write_u16::<LittleEndian>(5));
+        try!(writer.write_u16::<LittleEndian>(0));
+        Ok(Writer { writer: writer })
     }
 
     /// Writes a point to this SDC file.
