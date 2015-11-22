@@ -5,9 +5,9 @@
 extern crate byteorder;
 
 pub mod error;
-pub mod file;
 pub mod point;
 mod result;
+pub mod writer;
 
-pub use file::File;
+pub use writer::Writer;
 pub use point::{Point, TargetType};

@@ -1,4 +1,4 @@
-//! SDC file management.
+//! Object for creating .sdc files.
 
 use std::fs;
 use std::io::{BufWriter, Write};
@@ -9,12 +9,12 @@ use byteorder::{LittleEndian, WriteBytesExt};
 use point::Point;
 use result::Result;
 
-/// An SDC file.
-pub struct File<W: Write> {
+/// An .sdc writer.
+pub struct Writer<W: Write> {
     writer: W,
 }
 
-impl File<BufWriter<fs::File>> {
+impl Writer<BufWriter<fs::File>> {
     /// Creates a new SDC file and opens it for writing.
     ///
     /// The file will be closed when the file goes out of scope.
@@ -23,33 +23,41 @@ impl File<BufWriter<fs::File>> {
     ///
     /// ```
     /// use std::fs::remove_file;
-    /// use sdc::file::File;
+    /// use sdc::writer::Writer;
     /// {
-    ///     let file = File::create("temp.sdc").unwrap();
+    ///     let writer = Writer::from_path("temp.sdc").unwrap();
     /// }
     /// remove_file("temp.sdc").unwrap();
-    pub fn create<P: AsRef<Path>>(path: P) -> Result<File<BufWriter<fs::File>>> {
-        let mut writer = BufWriter::new(try!(fs::File::create(path)));
-        try!(writer.write_u32::<LittleEndian>(8));
-        // TODO hardcoded version, make this smahtar.
-        try!(writer.write_u16::<LittleEndian>(5));
-        try!(writer.write_u16::<LittleEndian>(0));
-        Ok(File { writer: writer })
+    pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Writer<BufWriter<fs::File>>> {
+        let writer = BufWriter::new(try!(fs::File::create(path)));
+        let mut writer = Writer {
+            writer: writer,
+        };
+        try!(writer.write_header());
+        Ok(writer)
     }
 }
 
-impl<W: Write> File<W> {
+impl<W: Write> Writer<W> {
+    fn write_header(&mut self) -> Result<()> {
+        try!(self.writer.write_u32::<LittleEndian>(8));
+        // TODO hardcoded version, make this smahtar.
+        try!(self.writer.write_u16::<LittleEndian>(5));
+        try!(self.writer.write_u16::<LittleEndian>(0));
+        Ok(())
+    }
+
     /// Writes a point to this SDC file.
     ///
     /// # Examples
     ///
     /// ```
     /// # use std::fs::remove_file;
-    /// use sdc::file::File;
+    /// use sdc::writer::Writer;
     /// use sdc::point::Point;
     /// let ref point = Point::new();
     /// {
-    ///     let mut file = File::create("temp.sdc").unwrap();
+    ///     let mut file = Writer::from_path("temp.sdc").unwrap();
     ///     file.write_point(point).unwrap();
     /// }
     /// # remove_file("temp.sdc").unwrap();
