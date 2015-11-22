@@ -2,6 +2,9 @@
 //!
 //! At this point, we're keeping it simple and only handling 5.0.
 
+use error::SdcError;
+use result::Result;
+
 #[derive(Default)]
 pub struct Point {
     pub time: f64,
@@ -51,6 +54,7 @@ impl Point {
     }
 }
 
+#[derive(Debug, PartialEq)]
 pub enum TargetType {
     CenterOfGravity,
     Parabola,
@@ -75,6 +79,25 @@ impl TargetType {
             TargetType::Parabola => 1,
             TargetType::Gaussian => 2,
             TargetType::Peak => 3,
+        }
+    }
+
+    /// Returns the target type for this `u8`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use sdc::point::TargetType;
+    /// assert_eq!(TargetType::Peak, TargetType::from_u8(3).unwrap());
+    /// assert!(TargetType::from_u8(10).is_err());
+    /// ```
+    pub fn from_u8(n: u8) -> Result<TargetType> {
+        match n {
+            0 => Ok(TargetType::CenterOfGravity),
+            1 => Ok(TargetType::Parabola),
+            2 => Ok(TargetType::Gaussian),
+            3 => Ok(TargetType::Peak),
+            _ => Err(SdcError::InvalidTargetType(n)),
         }
     }
 }

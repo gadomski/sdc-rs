@@ -6,8 +6,10 @@ extern crate byteorder;
 
 pub mod error;
 pub mod point;
+pub mod reader;
 mod result;
 pub mod writer;
 
-pub use writer::Writer;
 pub use point::{Point, TargetType};
+pub use reader::Reader;
+pub use writer::Writer;
