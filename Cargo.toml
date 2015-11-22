@@ -3,6 +3,10 @@ name = "sdc"
 version = "0.1.0"
 authors = ["Pete Gadomski <pete.gadomski@gmail.com>"]
 
+[[bin]]
+name = "sdc"
+doc = false
+
 [dependencies]
 byteorder = "0.4"
 docopt = "0.6"
