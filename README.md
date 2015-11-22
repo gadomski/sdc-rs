@@ -21,7 +21,7 @@ The only way to get the total number of points in an `sdc` file is to read to th
 
 As much as possible, this code is available under the MIT license.
 See `LICENSE.txt` in this repository for the complete license.
-We don't use any Riegl libraries, just their published file format, but in case it's unclear their file format is there, and all that.
+We don't use any Riegl libraries, just their published file format, but in case it's unclear their file format is theirs, and all that.
 
 
 ## Contributing
