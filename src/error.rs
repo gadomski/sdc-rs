@@ -7,12 +7,18 @@ use std::str;
 
 use byteorder;
 
+/// Our custom error type.
 #[derive(Debug)]
 pub enum SdcError {
+    /// Wrapper around a `byteorder::Error`.
     Byteorder(byteorder::Error),
+    /// The header information is invalid.
     InvalidHeaderInformation,
+    /// The given number cannot be converted to a target type.
     InvalidTargetType(u8),
+    /// Wrapper around `std::io::Error`.
     Io(io::Error),
+    /// Wrapper around `std::str::Error`.
     Utf8(str::Utf8Error),
 }
 

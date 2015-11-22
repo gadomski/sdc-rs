@@ -10,6 +10,7 @@ use point::Point;
 use result::Result;
 
 /// An .sdc writer.
+#[derive(Debug)]
 pub struct Writer<W: Write> {
     writer: W,
 }

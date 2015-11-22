@@ -5,7 +5,9 @@
 use error::SdcError;
 use result::Result;
 
-#[derive(Default)]
+/// An SDC point.
+#[derive(Clone, Copy, Debug, Default)]
+#[allow(missing_docs)]
 pub struct Point {
     pub time: f64,
     pub range: f32,
@@ -54,7 +56,9 @@ impl Point {
     }
 }
 
-#[derive(Debug, PartialEq)]
+/// How the point was derived from a waveform.
+#[derive(Clone, Copy, Debug, PartialEq)]
+#[allow(missing_docs)]
 pub enum TargetType {
     CenterOfGravity,
     Parabola,

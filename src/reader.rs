@@ -16,6 +16,7 @@ use result::Result;
 /// An object for readings .sdc points.
 ///
 /// We don't just read them all into memory right away since .sdc files can be quite big.
+#[derive(Debug)]
 pub struct Reader<R: Read> {
     reader: R,
     version: (u16, u16),
@@ -150,6 +151,7 @@ impl<R: Read> IntoIterator for Reader<R> {
 }
 
 /// An iterator over a reader's points.
+#[derive(Debug)]
 pub struct PointIterator<R: Read> {
     reader: Reader<R>,
 }
