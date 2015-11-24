@@ -153,6 +153,9 @@
 <span id="111">111</span>
 <span id="112">112</span>
 <span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! An SDC point record.</span>
 <span class='doccomment'>//!</span>
@@ -179,6 +182,9 @@
     <span class='kw'>pub</span> <span class='ident'>rg_index</span>: <span class='ident'>u16</span>,
     <span class='kw'>pub</span> <span class='ident'>facet_number</span>: <span class='ident'>u8</span>,
     <span class='kw'>pub</span> <span class='ident'>high_channel</span>: <span class='ident'>bool</span>,
+    <span class='kw'>pub</span> <span class='ident'>class_id</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>,
+    <span class='kw'>pub</span> <span class='ident'>rho</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>f32</span><span class='op'>&gt;</span>,
+    <span class='kw'>pub</span> <span class='ident'>reflectance</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>i16</span><span class='op'>&gt;</span>,
 }
 
 <span class='kw'>impl</span> <span class='ident'>Point</span> {

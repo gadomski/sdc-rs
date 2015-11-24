@@ -45,7 +45,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-1089' class='srclink' href='../../src/sdc/reader.rs.html#20-24' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-1201' class='srclink' href='../../src/sdc/reader.rs.html#20-24' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Reader&lt;R: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Read.html' title='std::io::Read'>Read</a>&gt; {
     // some fields omitted
 }</pre><div class='docblock'><p>An object for readings .sdc points.</p>
@@ -57,7 +57,7 @@
 <h1 id="examples" class='section-header'><a
                            href="#examples">Examples</a></h1><pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>sdc</span>::<span class='ident'>reader</span>::<span class='ident'>Reader</span>;
-<span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>Reader</span>::<span class='ident'>from_path</span>(<span class='string'>&quot;data/4-points.sdc&quot;</span>).<span class='ident'>unwrap</span>();</pre>
+<span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>Reader</span>::<span class='ident'>from_path</span>(<span class='string'>&quot;data/4-points-5.0.sdc&quot;</span>).<span class='ident'>unwrap</span>();</pre>
 </div></div><h3 class='impl'><code>impl&lt;R: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Read.html' title='std::io::Read'>Read</a>&gt; <a class='struct' href='../../sdc/reader/struct.Reader.html' title='sdc::reader::Reader'>Reader</a>&lt;R&gt;</code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(reader: R) -&gt; Result&lt;<a class='struct' href='../../sdc/reader/struct.Reader.html' title='sdc::reader::Reader'>Reader</a>&lt;R&gt;&gt;</code></h4>
 <div class='docblock'><p>Creates a new reader, consuimg a <code>Read</code>.</p>
 
@@ -65,7 +65,7 @@
                            href="#examples">Examples</a></h1><pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fs</span>::<span class='ident'>File</span>;
 <span class='kw'>use</span> <span class='ident'>sdc</span>::<span class='ident'>reader</span>::<span class='ident'>Reader</span>;
-<span class='kw'>let</span> <span class='ident'>file</span> <span class='op'>=</span> <span class='ident'>File</span>::<span class='ident'>open</span>(<span class='string'>&quot;data/4-points.sdc&quot;</span>).<span class='ident'>unwrap</span>();
+<span class='kw'>let</span> <span class='ident'>file</span> <span class='op'>=</span> <span class='ident'>File</span>::<span class='ident'>open</span>(<span class='string'>&quot;data/4-points-5.0.sdc&quot;</span>).<span class='ident'>unwrap</span>();
 <span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>Reader</span>::<span class='ident'>new</span>(<span class='ident'>file</span>);</pre>
 </div><h4 id='method.next_point' class='method'><code>fn <a href='#method.next_point' class='fnname'>next_point</a>(&amp;mut self) -&gt; Result&lt;<a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../../sdc/point/struct.Point.html' title='sdc::point::Point'>Point</a>&gt;&gt;</code></h4>
 <div class='docblock'><p>Reads the next point from the underlying <code>Read</code>.</p>
@@ -73,23 +73,23 @@
 <h1 id="examples" class='section-header'><a
                            href="#examples">Examples</a></h1><pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>sdc</span>::<span class='ident'>reader</span>::<span class='ident'>Reader</span>;
-<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>Reader</span>::<span class='ident'>from_path</span>(<span class='string'>&quot;data/4-points.sdc&quot;</span>).<span class='ident'>unwrap</span>();
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>Reader</span>::<span class='ident'>from_path</span>(<span class='string'>&quot;data/4-points-5.0.sdc&quot;</span>).<span class='ident'>unwrap</span>();
 <span class='kw'>let</span> <span class='ident'>point</span> <span class='op'>=</span> <span class='ident'>reader</span>.<span class='ident'>next_point</span>();</pre>
-</div><h4 id='method.version' class='method'><code>fn <a href='#method.version' class='fnname'>version</a>(&amp;self) -&gt; <a href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a href='https://doc.rust-lang.org/nightly/std/primitive.u16.html'>u16</a>, <a href='https://doc.rust-lang.org/nightly/std/primitive.u16.html'>u16</a>)</a></code></h4>
+</div><h4 id='method.version' class='method'><code>fn <a href='#method.version' class='fnname'>version</a>(&amp;self) -&gt; <a class='struct' href='../../sdc/reader/struct.Version.html' title='sdc::reader::Version'>Version</a></code></h4>
 <div class='docblock'><p>Returns this file&#39;s version as a <code>(u16, u16)</code>.</p>
 
 <h1 id="examples" class='section-header'><a
                            href="#examples">Examples</a></h1><pre class='rust rust-example-rendered'>
-<span class='kw'>use</span> <span class='ident'>sdc</span>::<span class='ident'>reader</span>::<span class='ident'>Reader</span>;
-<span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>Reader</span>::<span class='ident'>from_path</span>(<span class='string'>&quot;data/4-points.sdc&quot;</span>).<span class='ident'>unwrap</span>();
-<span class='kw'>let</span> (<span class='ident'>major</span>, <span class='ident'>minor</span>) <span class='op'>=</span> <span class='ident'>reader</span>.<span class='ident'>version</span>();</pre>
+<span class='kw'>use</span> <span class='ident'>sdc</span>::<span class='ident'>reader</span>::{<span class='ident'>Reader</span>, <span class='ident'>Version</span>};
+<span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>Reader</span>::<span class='ident'>from_path</span>(<span class='string'>&quot;data/4-points-5.0.sdc&quot;</span>).<span class='ident'>unwrap</span>();
+<span class='kw'>let</span> <span class='ident'>Version</span> { <span class='ident'>major</span>, <span class='ident'>minor</span> } <span class='op'>=</span> <span class='ident'>reader</span>.<span class='ident'>version</span>();</pre>
 </div><h4 id='method.header_information_as_str' class='method'><code>fn <a href='#method.header_information_as_str' class='fnname'>header_information_as_str</a>(&amp;self) -&gt; Result&lt;&amp;<a href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;</code></h4>
 <div class='docblock'><p>Returns this file&#39;s header information, or an error if it is not valid ASCII.</p>
 
 <h1 id="examples" class='section-header'><a
                            href="#examples">Examples</a></h1><pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>sdc</span>::<span class='ident'>reader</span>::<span class='ident'>Reader</span>;
-<span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>Reader</span>::<span class='ident'>from_path</span>(<span class='string'>&quot;data/4-points.sdc&quot;</span>).<span class='ident'>unwrap</span>();
+<span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>Reader</span>::<span class='ident'>from_path</span>(<span class='string'>&quot;data/4-points-5.0.sdc&quot;</span>).<span class='ident'>unwrap</span>();
 <span class='kw'>let</span> <span class='ident'>header_information</span> <span class='op'>=</span> <span class='ident'>reader</span>.<span class='ident'>header_information_as_str</span>();</pre>
 </div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;R: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Read.html' title='std::io::Read'>Read</a>&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>IntoIterator</a> for <a class='struct' href='../../sdc/reader/struct.Reader.html' title='sdc::reader::Reader'>Reader</a>&lt;R&gt;</code></h3><div class='impl-items'><h4 id='assoc_type.Item' class='type'><code>type Item = <a class='struct' href='../../sdc/point/struct.Point.html' title='sdc::point::Point'>Point</a></code></h4>
 <h4 id='assoc_type.IntoIter' class='type'><code>type IntoIter = <a class='struct' href='../../sdc/reader/struct.PointIterator.html' title='sdc::reader::PointIterator'>PointIterator</a>&lt;R&gt;</code></h4>

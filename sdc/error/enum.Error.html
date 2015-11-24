@@ -45,10 +45,11 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-12' class='srclink' href='../../src/sdc/error.rs.html#12-23' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-12' class='srclink' href='../../src/sdc/error.rs.html#12-25' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum Error {
     Byteorder(<a class='enum' href='../../byteorder/new/enum.Error.html' title='byteorder::new::Error'>Error</a>),
     InvalidHeaderInformation,
+    InvalidMajorVersion(<a href='https://doc.rust-lang.org/nightly/std/primitive.u16.html'>u16</a>),
     InvalidTargetType(<a href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>),
     Io(<a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>),
     Utf8(<a class='struct' href='https://doc.rust-lang.org/nightly/core/str/struct.Utf8Error.html' title='core::str::Utf8Error'>Utf8Error</a>),
@@ -56,6 +57,7 @@
 </div><h2 class='variants'>Variants</h2>
 <table><tr><td id='variant.Byteorder'><code>Byteorder</code></td><td><div class='docblock'><p>Wrapper around a <code>byteorder::Error</code>.</p>
 </div></td></tr><tr><td id='variant.InvalidHeaderInformation'><code>InvalidHeaderInformation</code></td><td><div class='docblock'><p>The header information is invalid.</p>
+</div></td></tr><tr><td id='variant.InvalidMajorVersion'><code>InvalidMajorVersion</code></td><td><div class='docblock'><p>The sdc file has an invalid major version number.</p>
 </div></td></tr><tr><td id='variant.InvalidTargetType'><code>InvalidTargetType</code></td><td><div class='docblock'><p>The given number cannot be converted to a target type.</p>
 </div></td></tr><tr><td id='variant.Io'><code>Io</code></td><td><div class='docblock'><p>Wrapper around <code>std::io::Error</code>.</p>
 </div></td></tr><tr><td id='variant.Utf8'><code>Utf8</code></td><td><div class='docblock'><p>Wrapper around <code>std::str::Error</code>.</p>

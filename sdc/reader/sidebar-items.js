@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["PointIterator","An iterator over a reader's points."],["Reader","An object for readings .sdc points."]]});
+initSidebarItems({"struct":[["PointIterator","An iterator over a reader's points."],["Reader","An object for readings .sdc points."],["Version","The sdc file version."]]});

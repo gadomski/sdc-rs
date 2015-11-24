@@ -114,6 +114,10 @@
 <span id="72">72</span>
 <span id="73">73</span>
 <span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Our custom error types.</span>
 
@@ -131,6 +135,8 @@
     <span class='ident'>Byteorder</span>(<span class='ident'>byteorder</span>::<span class='ident'>Error</span>),
     <span class='doccomment'>/// The header information is invalid.</span>
     <span class='ident'>InvalidHeaderInformation</span>,
+    <span class='doccomment'>/// The sdc file has an invalid major version number.</span>
+    <span class='ident'>InvalidMajorVersion</span>(<span class='ident'>u16</span>),
     <span class='doccomment'>/// The given number cannot be converted to a target type.</span>
     <span class='ident'>InvalidTargetType</span>(<span class='ident'>u8</span>),
     <span class='doccomment'>/// Wrapper around `std::io::Error`.</span>
@@ -144,6 +150,7 @@
         <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
             <span class='ident'>Error</span>::<span class='ident'>Byteorder</span>(<span class='kw-2'>ref</span> <span class='ident'>err</span>) <span class='op'>=&gt;</span> <span class='ident'>err</span>.<span class='ident'>description</span>(),
             <span class='ident'>Error</span>::<span class='ident'>InvalidHeaderInformation</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid header information&quot;</span>,
+            <span class='ident'>Error</span>::<span class='ident'>InvalidMajorVersion</span>(_) <span class='op'>=&gt;</span> <span class='string'>&quot;invalid major version&quot;</span>,
             <span class='ident'>Error</span>::<span class='ident'>InvalidTargetType</span>(_) <span class='op'>=&gt;</span> <span class='string'>&quot;invalid target type&quot;</span>,
             <span class='ident'>Error</span>::<span class='ident'>Io</span>(<span class='kw-2'>ref</span> <span class='ident'>err</span>) <span class='op'>=&gt;</span> <span class='ident'>err</span>.<span class='ident'>description</span>(),
             <span class='ident'>Error</span>::<span class='ident'>Utf8</span>(<span class='kw-2'>ref</span> <span class='ident'>err</span>) <span class='op'>=&gt;</span> <span class='ident'>err</span>.<span class='ident'>description</span>(),
@@ -165,6 +172,7 @@
         <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
             <span class='ident'>Error</span>::<span class='ident'>Byteorder</span>(<span class='kw-2'>ref</span> <span class='ident'>err</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Byteorder error: {}&quot;</span>, <span class='ident'>err</span>),
             <span class='ident'>Error</span>::<span class='ident'>InvalidHeaderInformation</span> <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Invalid header information&quot;</span>),
+            <span class='ident'>Error</span>::<span class='ident'>InvalidMajorVersion</span>(<span class='ident'>n</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Invalid major version: {}&quot;</span>, <span class='ident'>n</span>),
             <span class='ident'>Error</span>::<span class='ident'>InvalidTargetType</span>(<span class='ident'>n</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Invalid target type: {}&quot;</span>, <span class='ident'>n</span>),
             <span class='ident'>Error</span>::<span class='ident'>Io</span>(<span class='kw-2'>ref</span> <span class='ident'>err</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;IO error: {}&quot;</span>, <span class='ident'>err</span>),
             <span class='ident'>Error</span>::<span class='ident'>Utf8</span>(<span class='kw-2'>ref</span> <span class='ident'>err</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Utf8 error: {}&quot;</span>, <span class='ident'>err</span>),

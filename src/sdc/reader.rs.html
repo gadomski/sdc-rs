@@ -216,6 +216,42 @@
 <span id="174">174</span>
 <span id="175">175</span>
 <span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Read points from an .sdc file.</span>
 
@@ -238,8 +274,17 @@
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Reader</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>Read</span><span class='op'>&gt;</span> {
     <span class='ident'>reader</span>: <span class='ident'>R</span>,
-    <span class='ident'>version</span>: (<span class='ident'>u16</span>, <span class='ident'>u16</span>),
+    <span class='ident'>version</span>: <span class='ident'>Version</span>,
     <span class='ident'>header_information</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>,
+}
+
+<span class='doccomment'>/// The sdc file version.</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Copy</span>, <span class='ident'>Debug</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Version</span> {
+    <span class='doccomment'>/// The sdc major version.</span>
+    <span class='kw'>pub</span> <span class='ident'>major</span>: <span class='ident'>u16</span>,
+    <span class='doccomment'>/// The sdc minor version.</span>
+    <span class='kw'>pub</span> <span class='ident'>minor</span>: <span class='ident'>u16</span>,
 }
 
 <span class='kw'>impl</span> <span class='ident'>Reader</span><span class='op'>&lt;</span><span class='ident'>BufReader</span><span class='op'>&lt;</span><span class='ident'>File</span><span class='op'>&gt;&gt;</span> {
@@ -249,7 +294,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use sdc::reader::Reader;</span>
-    <span class='doccomment'>/// let reader = Reader::from_path(&quot;data/4-points.sdc&quot;).unwrap();</span>
+    <span class='doccomment'>/// let reader = Reader::from_path(&quot;data/4-points-5.0.sdc&quot;).unwrap();</span>
     <span class='doccomment'>/// ```</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_path</span><span class='op'>&lt;</span><span class='ident'>P</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>Path</span><span class='op'>&gt;&gt;</span>(<span class='ident'>path</span>: <span class='ident'>P</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Reader</span><span class='op'>&lt;</span><span class='ident'>BufReader</span><span class='op'>&lt;</span><span class='ident'>File</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>BufReader</span>::<span class='ident'>new</span>(<span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>File</span>::<span class='ident'>open</span>(<span class='ident'>path</span>)));
@@ -265,12 +310,15 @@
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use std::fs::File;</span>
     <span class='doccomment'>/// use sdc::reader::Reader;</span>
-    <span class='doccomment'>/// let file = File::open(&quot;data/4-points.sdc&quot;).unwrap();</span>
+    <span class='doccomment'>/// let file = File::open(&quot;data/4-points-5.0.sdc&quot;).unwrap();</span>
     <span class='doccomment'>/// let reader = Reader::new(file);</span>
     <span class='doccomment'>/// ```</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='kw-2'>mut</span> <span class='ident'>reader</span>: <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Reader</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>header_size</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>reader</span>.<span class='ident'>read_u32</span>::<span class='op'>&lt;</span><span class='ident'>LittleEndian</span><span class='op'>&gt;</span>());
         <span class='kw'>let</span> <span class='ident'>major</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>reader</span>.<span class='ident'>read_u16</span>::<span class='op'>&lt;</span><span class='ident'>LittleEndian</span><span class='op'>&gt;</span>());
+        <span class='kw'>if</span> <span class='ident'>major</span> <span class='op'>!=</span> <span class='number'>5</span> {
+            <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>InvalidMajorVersion</span>(<span class='ident'>major</span>));
+        }
         <span class='kw'>let</span> <span class='ident'>minor</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>reader</span>.<span class='ident'>read_u16</span>::<span class='op'>&lt;</span><span class='ident'>LittleEndian</span><span class='op'>&gt;</span>());
         <span class='kw'>let</span> <span class='ident'>header_information_size</span> <span class='op'>=</span> <span class='ident'>header_size</span> <span class='op'>-</span> <span class='number'>8</span>;
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>header_information</span> <span class='op'>=</span> <span class='ident'>Vec</span>::<span class='ident'>with_capacity</span>(<span class='ident'>header_information_size</span> <span class='kw'>as</span> <span class='ident'>usize</span>);
@@ -282,7 +330,7 @@
         }
         <span class='prelude-val'>Ok</span>(<span class='ident'>Reader</span> {
             <span class='ident'>reader</span>: <span class='ident'>reader</span>,
-            <span class='ident'>version</span>: (<span class='ident'>major</span>, <span class='ident'>minor</span>),
+            <span class='ident'>version</span>: <span class='ident'>Version</span> { <span class='ident'>major</span>: <span class='ident'>major</span>, <span class='ident'>minor</span>: <span class='ident'>minor</span>, },
             <span class='ident'>header_information</span>: <span class='ident'>header_information</span>,
         })
     }
@@ -293,7 +341,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use sdc::reader::Reader;</span>
-    <span class='doccomment'>/// let mut reader = Reader::from_path(&quot;data/4-points.sdc&quot;).unwrap();</span>
+    <span class='doccomment'>/// let mut reader = Reader::from_path(&quot;data/4-points-5.0.sdc&quot;).unwrap();</span>
     <span class='doccomment'>/// let point = reader.next_point();</span>
     <span class='doccomment'>/// ```</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>next_point</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Point</span><span class='op'>&gt;&gt;</span> {
@@ -316,6 +364,19 @@
         <span class='kw'>let</span> <span class='ident'>num_target</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='self'>self</span>.<span class='ident'>reader</span>.<span class='ident'>read_u8</span>());
         <span class='kw'>let</span> <span class='ident'>rg_index</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='self'>self</span>.<span class='ident'>reader</span>.<span class='ident'>read_u16</span>::<span class='op'>&lt;</span><span class='ident'>LittleEndian</span><span class='op'>&gt;</span>());
         <span class='kw'>let</span> <span class='ident'>channel_desc_byte</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='self'>self</span>.<span class='ident'>reader</span>.<span class='ident'>read_u8</span>());
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>class_id</span> <span class='op'>=</span> <span class='prelude-val'>None</span>;
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>rho</span> <span class='op'>=</span> <span class='prelude-val'>None</span>;
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>reflectance</span> <span class='op'>=</span> <span class='prelude-val'>None</span>;
+        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>version</span>.<span class='ident'>major</span> <span class='op'>&gt;=</span> <span class='number'>5</span> <span class='op'>&amp;&amp;</span> <span class='self'>self</span>.<span class='ident'>version</span>.<span class='ident'>minor</span> <span class='op'>&gt;=</span> <span class='number'>2</span> {
+            <span class='ident'>class_id</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='macro'>try</span><span class='macro'>!</span>(<span class='self'>self</span>.<span class='ident'>reader</span>.<span class='ident'>read_u8</span>()));
+        }
+        <span class='comment'>// These 5.3 and 5.4 reads are untested, since I don&#39;t have a real-world sample file yet.</span>
+        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>version</span>.<span class='ident'>major</span> <span class='op'>&gt;=</span> <span class='number'>5</span> <span class='op'>&amp;&amp;</span> <span class='self'>self</span>.<span class='ident'>version</span>.<span class='ident'>minor</span> <span class='op'>&gt;=</span> <span class='number'>3</span> {
+            <span class='ident'>rho</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='macro'>try</span><span class='macro'>!</span>(<span class='self'>self</span>.<span class='ident'>reader</span>.<span class='ident'>read_f32</span>::<span class='op'>&lt;</span><span class='ident'>LittleEndian</span><span class='op'>&gt;</span>()));
+        }
+        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>version</span>.<span class='ident'>major</span> <span class='op'>&gt;=</span> <span class='number'>5</span> <span class='op'>&amp;&amp;</span> <span class='self'>self</span>.<span class='ident'>version</span>.<span class='ident'>minor</span> <span class='op'>&gt;=</span> <span class='number'>4</span> {
+            <span class='ident'>reflectance</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='macro'>try</span><span class='macro'>!</span>(<span class='self'>self</span>.<span class='ident'>reader</span>.<span class='ident'>read_i16</span>::<span class='op'>&lt;</span><span class='ident'>LittleEndian</span><span class='op'>&gt;</span>()));
+        }
         <span class='prelude-val'>Ok</span>(<span class='prelude-val'>Some</span>(<span class='ident'>Point</span> {
             <span class='ident'>time</span>: <span class='ident'>time</span>,
             <span class='ident'>range</span>: <span class='ident'>range</span>,
@@ -331,6 +392,9 @@
             <span class='ident'>rg_index</span>: <span class='ident'>rg_index</span>,
             <span class='ident'>facet_number</span>: <span class='ident'>channel_desc_byte</span> <span class='kw-2'>&amp;</span> <span class='number'>0x3</span>,
             <span class='ident'>high_channel</span>: (<span class='ident'>channel_desc_byte</span> <span class='kw-2'>&amp;</span> <span class='number'>0b01000000</span>) <span class='op'>==</span> <span class='number'>0b01000000</span>,
+            <span class='ident'>class_id</span>: <span class='ident'>class_id</span>,
+            <span class='ident'>rho</span>: <span class='ident'>rho</span>,
+            <span class='ident'>reflectance</span>: <span class='ident'>reflectance</span>
         }))
     }
 
@@ -339,11 +403,11 @@
     <span class='doccomment'>/// # Examples</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use sdc::reader::Reader;</span>
-    <span class='doccomment'>/// let reader = Reader::from_path(&quot;data/4-points.sdc&quot;).unwrap();</span>
-    <span class='doccomment'>/// let (major, minor) = reader.version();</span>
+    <span class='doccomment'>/// use sdc::reader::{Reader, Version};</span>
+    <span class='doccomment'>/// let reader = Reader::from_path(&quot;data/4-points-5.0.sdc&quot;).unwrap();</span>
+    <span class='doccomment'>/// let Version { major, minor } = reader.version();</span>
     <span class='doccomment'>/// ```</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>version</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>u16</span>, <span class='ident'>u16</span>) {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>version</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Version</span> {
         <span class='self'>self</span>.<span class='ident'>version</span>
     }
 
@@ -353,7 +417,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use sdc::reader::Reader;</span>
-    <span class='doccomment'>/// let reader = Reader::from_path(&quot;data/4-points.sdc&quot;).unwrap();</span>
+    <span class='doccomment'>/// let reader = Reader::from_path(&quot;data/4-points-5.0.sdc&quot;).unwrap();</span>
     <span class='doccomment'>/// let header_information = reader.header_information_as_str();</span>
     <span class='doccomment'>/// ```</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>header_information_as_str</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>str</span><span class='op'>&gt;</span> {
@@ -388,9 +452,17 @@
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>read_points</span>() {
-        <span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>Reader</span>::<span class='ident'>from_path</span>(<span class='string'>&quot;data/4-points.sdc&quot;</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>Reader</span>::<span class='ident'>from_path</span>(<span class='string'>&quot;data/4-points-5.0.sdc&quot;</span>).<span class='ident'>unwrap</span>();
         <span class='kw'>let</span> <span class='ident'>points</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>reader</span>.<span class='ident'>into_iter</span>().<span class='ident'>collect</span>();
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>4</span>, <span class='ident'>points</span>.<span class='ident'>len</span>());
+    }
+
+    <span class='attribute'>#[<span class='ident'>test</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>read_52</span>() {
+        <span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>Reader</span>::<span class='ident'>from_path</span>(<span class='string'>&quot;data/4-points-5.2.sdc&quot;</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>points</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>reader</span>.<span class='ident'>into_iter</span>().<span class='ident'>collect</span>();
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>4</span>, <span class='ident'>points</span>.<span class='ident'>len</span>());
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>4</span>, <span class='ident'>points</span>[<span class='number'>0</span>].<span class='ident'>class_id</span>.<span class='ident'>unwrap</span>());
     }
 }
 </pre>
