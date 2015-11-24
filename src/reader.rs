@@ -19,8 +19,17 @@ use result::Result;
 #[derive(Debug)]
 pub struct Reader<R: Read> {
     reader: R,
-    version: (u16, u16),
+    version: Version,
     header_information: Vec<u8>,
+}
+
+/// The sdc file version.
+#[derive(Clone, Copy, Debug)]
+pub struct Version {
+    /// The sdc major version.
+    pub major: u16,
+    /// The sdc minor version.
+    pub minor: u16,
 }
 
 impl Reader<BufReader<File>> {
@@ -30,7 +39,7 @@ impl Reader<BufReader<File>> {
     ///
     /// ```
     /// use sdc::reader::Reader;
-    /// let reader = Reader::from_path("data/4-points.sdc").unwrap();
+    /// let reader = Reader::from_path("data/4-points-5.0.sdc").unwrap();
     /// ```
     pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Reader<BufReader<File>>> {
         let reader = BufReader::new(try!(File::open(path)));
@@ -46,12 +55,15 @@ impl<R: Read> Reader<R> {
     /// ```
     /// use std::fs::File;
     /// use sdc::reader::Reader;
-    /// let file = File::open("data/4-points.sdc").unwrap();
+    /// let file = File::open("data/4-points-5.0.sdc").unwrap();
     /// let reader = Reader::new(file);
     /// ```
     pub fn new(mut reader: R) -> Result<Reader<R>> {
         let header_size = try!(reader.read_u32::<LittleEndian>());
         let major = try!(reader.read_u16::<LittleEndian>());
+        if major != 5 {
+            return Err(Error::InvalidMajorVersion(major));
+        }
         let minor = try!(reader.read_u16::<LittleEndian>());
         let header_information_size = header_size - 8;
         let mut header_information = Vec::with_capacity(header_information_size as usize);
@@ -63,7 +75,7 @@ impl<R: Read> Reader<R> {
         }
         Ok(Reader {
             reader: reader,
-            version: (major, minor),
+            version: Version { major: major, minor: minor, },
             header_information: header_information,
         })
     }
@@ -74,7 +86,7 @@ impl<R: Read> Reader<R> {
     ///
     /// ```
     /// use sdc::reader::Reader;
-    /// let mut reader = Reader::from_path("data/4-points.sdc").unwrap();
+    /// let mut reader = Reader::from_path("data/4-points-5.0.sdc").unwrap();
     /// let point = reader.next_point();
     /// ```
     pub fn next_point(&mut self) -> Result<Option<Point>> {
@@ -97,6 +109,19 @@ impl<R: Read> Reader<R> {
         let num_target = try!(self.reader.read_u8());
         let rg_index = try!(self.reader.read_u16::<LittleEndian>());
         let channel_desc_byte = try!(self.reader.read_u8());
+        let mut class_id = None;
+        let mut rho = None;
+        let mut reflectance = None;
+        if self.version.major >= 5 && self.version.minor >= 2 {
+            class_id = Some(try!(self.reader.read_u8()));
+        }
+        // These 5.3 and 5.4 reads are untested, since I don't have a real-world sample file yet.
+        if self.version.major >= 5 && self.version.minor >= 3 {
+            rho = Some(try!(self.reader.read_f32::<LittleEndian>()));
+        }
+        if self.version.major >= 5 && self.version.minor >= 4 {
+            reflectance = Some(try!(self.reader.read_i16::<LittleEndian>()));
+        }
         Ok(Some(Point {
             time: time,
             range: range,
@@ -112,6 +137,9 @@ impl<R: Read> Reader<R> {
             rg_index: rg_index,
             facet_number: channel_desc_byte & 0x3,
             high_channel: (channel_desc_byte & 0b01000000) == 0b01000000,
+            class_id: class_id,
+            rho: rho,
+            reflectance: reflectance
         }))
     }
 
@@ -120,11 +148,11 @@ impl<R: Read> Reader<R> {
     /// # Examples
     ///
     /// ```
-    /// use sdc::reader::Reader;
-    /// let reader = Reader::from_path("data/4-points.sdc").unwrap();
-    /// let (major, minor) = reader.version();
+    /// use sdc::reader::{Reader, Version};
+    /// let reader = Reader::from_path("data/4-points-5.0.sdc").unwrap();
+    /// let Version { major, minor } = reader.version();
     /// ```
-    pub fn version(&self) -> (u16, u16) {
+    pub fn version(&self) -> Version {
         self.version
     }
 
@@ -134,7 +162,7 @@ impl<R: Read> Reader<R> {
     ///
     /// ```
     /// use sdc::reader::Reader;
-    /// let reader = Reader::from_path("data/4-points.sdc").unwrap();
+    /// let reader = Reader::from_path("data/4-points-5.0.sdc").unwrap();
     /// let header_information = reader.header_information_as_str();
     /// ```
     pub fn header_information_as_str(&self) -> Result<&str> {
@@ -169,8 +197,16 @@ mod tests {
 
     #[test]
     fn read_points() {
-        let reader = Reader::from_path("data/4-points.sdc").unwrap();
+        let reader = Reader::from_path("data/4-points-5.0.sdc").unwrap();
         let points: Vec<_> = reader.into_iter().collect();
         assert_eq!(4, points.len());
+    }
+
+    #[test]
+    fn read_52() {
+        let reader = Reader::from_path("data/4-points-5.2.sdc").unwrap();
+        let points: Vec<_> = reader.into_iter().collect();
+        assert_eq!(4, points.len());
+        assert_eq!(4, points[0].class_id.unwrap());
     }
 }

@@ -14,6 +14,8 @@ pub enum Error {
     Byteorder(byteorder::Error),
     /// The header information is invalid.
     InvalidHeaderInformation,
+    /// The sdc file has an invalid major version number.
+    InvalidMajorVersion(u16),
     /// The given number cannot be converted to a target type.
     InvalidTargetType(u8),
     /// Wrapper around `std::io::Error`.
@@ -27,6 +29,7 @@ impl error::Error for Error {
         match *self {
             Error::Byteorder(ref err) => err.description(),
             Error::InvalidHeaderInformation => "invalid header information",
+            Error::InvalidMajorVersion(_) => "invalid major version",
             Error::InvalidTargetType(_) => "invalid target type",
             Error::Io(ref err) => err.description(),
             Error::Utf8(ref err) => err.description(),
@@ -48,6 +51,7 @@ impl fmt::Display for Error {
         match *self {
             Error::Byteorder(ref err) => write!(f, "Byteorder error: {}", err),
             Error::InvalidHeaderInformation => write!(f, "Invalid header information"),
+            Error::InvalidMajorVersion(n) => write!(f, "Invalid major version: {}", n),
             Error::InvalidTargetType(n) => write!(f, "Invalid target type: {}", n),
             Error::Io(ref err) => write!(f, "IO error: {}", err),
             Error::Utf8(ref err) => write!(f, "Utf8 error: {}", err),

@@ -8,7 +8,7 @@ use std::process::exit;
 
 use docopt::Docopt;
 
-use sdc::Reader;
+use sdc::{Reader, Version};
 
 const USAGE: &'static str = "
 Work with .sdc files.
@@ -54,7 +54,7 @@ fn main() {
                 exit(1);
             }
         };
-        let (major, minor) = reader.version();
+        let Version {major, minor} = reader.version();
         println!("version: {}.{}", major, minor);
         match reader.header_information_as_str() {
             Ok(info) => println!("header information:\n{}", info),

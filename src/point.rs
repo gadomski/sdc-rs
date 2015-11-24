@@ -23,6 +23,9 @@ pub struct Point {
     pub rg_index: u16,
     pub facet_number: u8,
     pub high_channel: bool,
+    pub class_id: Option<u8>,
+    pub rho: Option<f32>,
+    pub reflectance: Option<i16>,
 }
 
 impl Point {
