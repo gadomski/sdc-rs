@@ -12,6 +12,7 @@ pub mod reader;
 mod result;
 pub mod writer;
 
+pub use error::Error;
 pub use point::{Point, TargetType};
 pub use reader::Reader;
 pub use writer::Writer;

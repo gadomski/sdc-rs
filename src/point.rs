@@ -2,7 +2,7 @@
 //!
 //! At this point, we're keeping it simple and only handling 5.0.
 
-use error::SdcError;
+use error::Error;
 use result::Result;
 
 /// An SDC point.
@@ -101,7 +101,7 @@ impl TargetType {
             1 => Ok(TargetType::Parabola),
             2 => Ok(TargetType::Gaussian),
             3 => Ok(TargetType::Peak),
-            _ => Err(SdcError::InvalidTargetType(n)),
+            _ => Err(Error::InvalidTargetType(n)),
         }
     }
 }

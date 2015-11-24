@@ -2,6 +2,6 @@
 
 use std::result;
 
-use error::SdcError;
+use error::Error;
 
-pub type Result<T> = result::Result<T, SdcError>;
+pub type Result<T> = result::Result<T, Error>;

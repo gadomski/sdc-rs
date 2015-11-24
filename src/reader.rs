@@ -9,7 +9,7 @@ use std::str;
 use byteorder;
 use byteorder::{LittleEndian, ReadBytesExt};
 
-use error::SdcError;
+use error::Error;
 use point::{Point, TargetType};
 use result::Result;
 
@@ -59,7 +59,7 @@ impl<R: Read> Reader<R> {
                       .take(header_information_size as u64)
                       .read_to_end(&mut header_information)) !=
            header_information_size as usize {
-            return Err(SdcError::InvalidHeaderInformation);
+            return Err(Error::InvalidHeaderInformation);
         }
         Ok(Reader {
             reader: reader,
@@ -83,7 +83,7 @@ impl<R: Read> Reader<R> {
         let time = match self.reader.read_f64::<LittleEndian>() {
             Ok(time) => time,
             Err(byteorder::Error::UnexpectedEOF) => return Ok(None),
-            Err(err) => return Err(SdcError::from(err)),
+            Err(err) => return Err(Error::from(err)),
         };
         let range = try!(self.reader.read_f32::<LittleEndian>());
         let theta = try!(self.reader.read_f32::<LittleEndian>());
@@ -138,7 +138,7 @@ impl<R: Read> Reader<R> {
     /// let header_information = reader.header_information_as_str();
     /// ```
     pub fn header_information_as_str(&self) -> Result<&str> {
-        str::from_utf8(&self.header_information[..]).map_err(|e| SdcError::from(e))
+        str::from_utf8(&self.header_information[..]).map_err(|e| Error::from(e))
     }
 }
 
