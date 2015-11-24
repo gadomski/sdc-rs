@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["SdcError","Our custom error type."]]});
+initSidebarItems({"enum":[["Error","Our custom error type."]]});

@@ -158,7 +158,7 @@
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! At this point, we&#39;re keeping it simple and only handling 5.0.</span>
 
-<span class='kw'>use</span> <span class='ident'>error</span>::<span class='ident'>SdcError</span>;
+<span class='kw'>use</span> <span class='ident'>error</span>::<span class='ident'>Error</span>;
 <span class='kw'>use</span> <span class='ident'>result</span>::<span class='prelude-ty'>Result</span>;
 
 <span class='doccomment'>/// An SDC point.</span>
@@ -257,7 +257,7 @@
             <span class='number'>1</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>TargetType</span>::<span class='ident'>Parabola</span>),
             <span class='number'>2</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>TargetType</span>::<span class='ident'>Gaussian</span>),
             <span class='number'>3</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>TargetType</span>::<span class='ident'>Peak</span>),
-            _ <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>SdcError</span>::<span class='ident'>InvalidTargetType</span>(<span class='ident'>n</span>)),
+            _ <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>InvalidTargetType</span>(<span class='ident'>n</span>)),
         }
     }
 }
