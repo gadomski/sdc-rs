@@ -1,6 +1,6 @@
 [package]
 name = "sdc"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Pete Gadomski <pete.gadomski@gmail.com>"]
 description = "Read and write Riegl's .sdc file format"
 documentation = "http://gadomski.github.io/sdc-rs"
