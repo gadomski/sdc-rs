@@ -23,12 +23,8 @@ impl Writer<BufWriter<fs::File>> {
     /// # Examples
     ///
     /// ```
-    /// use std::fs::remove_file;
     /// use sdc::writer::Writer;
-    /// {
-    ///     let writer = Writer::from_path("temp.sdc").unwrap();
-    /// }
-    /// remove_file("temp.sdc").unwrap();
+    /// let writer = Writer::from_path("/dev/null").unwrap();
     pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Writer<BufWriter<fs::File>>> {
         let writer = BufWriter::new(try!(fs::File::create(path)));
         Writer::new(writer)
@@ -41,14 +37,10 @@ impl<W: Write> Writer<W> {
     /// # Examples
     ///
     /// ```
-    /// # use std::fs::remove_file;
     /// use std::fs::File;
     /// use sdc::writer::Writer;
-    /// let writer = File::create("temp.sdc").unwrap();
-    /// {
-    ///     let writer = Writer::new(writer).unwrap();
-    /// }
-    /// # remove_file("temp.sdc").unwrap();
+    /// let writer = File::create("/dev/null").unwrap();
+    /// let writer = Writer::new(writer).unwrap();
     pub fn new(mut writer: W) -> Result<Writer<W>> {
         try!(writer.write_u32::<LittleEndian>(8));
         // TODO hardcoded version, make this smahtar.
@@ -62,15 +54,11 @@ impl<W: Write> Writer<W> {
     /// # Examples
     ///
     /// ```
-    /// # use std::fs::remove_file;
     /// use sdc::writer::Writer;
     /// use sdc::point::Point;
     /// let ref point = Point::new();
-    /// {
-    ///     let mut file = Writer::from_path("temp.sdc").unwrap();
-    ///     file.write_point(point).unwrap();
-    /// }
-    /// # remove_file("temp.sdc").unwrap();
+    /// let mut file = Writer::from_path("/dev/null").unwrap();
+    /// file.write_point(point).unwrap();
     pub fn write_point(&mut self, point: &Point) -> Result<()> {
         try!(self.writer.write_f64::<LittleEndian>(point.time));
         try!(self.writer.write_f32::<LittleEndian>(point.range));
